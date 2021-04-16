@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.0.0.1</Version>
+    <Authors>Jason Davis</Authors>
+    <Company>jasondavis303</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>jasondavis303</Copyright>
+    <PackageProjectUrl>https://github.com/jasondavis303/WFFmpeg</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jasondavis303/WFFmpeg</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>Just another over-simplified wrapper for the ffmpeg command line tool.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EasyProc" Version="21.4.16.331" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+</Project>
