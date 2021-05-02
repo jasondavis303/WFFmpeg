@@ -64,6 +64,7 @@ namespace WFFmpeg.FFmpeg.Decoding
         private async Task ScanStreamAsync(string args, IProgress<Progress> progress, CancellationToken cancellationToken)
         {
             _progress = progress;
+            _started = DateTime.Now;
             _duration = 0;
             _frames = 0;
             _vkb = 0;
@@ -71,7 +72,7 @@ namespace WFFmpeg.FFmpeg.Decoding
             _lastLine = null;
             _lastVFR = null;
 
-            progress?.Report(new Progress("Scanning", 0, false));
+            progress?.Report(new Progress("Scanning", 0, false, _started));
 
             var cmd = new Command();
             cmd.OnStdErr += (sender, e) => ParseText(e.Text);
@@ -92,12 +93,13 @@ namespace WFFmpeg.FFmpeg.Decoding
                     catch { }
             }
 
-            progress?.Report(new Progress("Scanning", 1d, true));
+            progress?.Report(new Progress("Scanning", 1d, true, _started));
 
         }
 
 
         private IProgress<Progress> _progress = null;
+        private DateTime _started = DateTime.Now;
         private double _duration = 0;
         private int _frames = 0;
         private int _vkb = 0;
@@ -132,7 +134,7 @@ namespace WFFmpeg.FFmpeg.Decoding
                 if (match.Success)
                     try
                     {
-                        _progress?.Report(new Progress("Scanning", TimeSpan.Parse(match.Groups[1].Value).TotalSeconds / _duration, false));
+                        _progress?.Report(new Progress("Scanning", TimeSpan.Parse(match.Groups[1].Value).TotalSeconds / _duration, false, _started));
                     }
                     catch { }
             }

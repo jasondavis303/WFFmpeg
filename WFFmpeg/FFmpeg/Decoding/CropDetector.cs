@@ -16,6 +16,7 @@ namespace WFFmpeg.FFmpeg.Decoding
         public async Task<Rectangle> RunAsync(string inputFile, IProgress<Progress> progress = null, CancellationToken cancellationToken = default)
         {
             _progress = progress;
+            _started = DateTime.Now;
 
             _crops = new List<string>();
             var cmd = new Command();
@@ -58,6 +59,8 @@ namespace WFFmpeg.FFmpeg.Decoding
                 minY = Math.Min(minY, parts[3]);
             }
 
+            progress?.Report(new Progress(TEXT, 1d, true, _started));
+
             return new Rectangle
             {
                 Height = maxH,
@@ -70,6 +73,7 @@ namespace WFFmpeg.FFmpeg.Decoding
         private IProgress<Progress> _progress = null;
         private double _duration = 0;
         private double _percent = 0;
+        private DateTime _started = DateTime.Now;
 
         private const string TEXT = "Detecting cropping";
         private List<string> _crops = new List<string>();
@@ -100,7 +104,7 @@ namespace WFFmpeg.FFmpeg.Decoding
                     catch { }
             }
 
-            _progress.Report(new Progress(TEXT, _percent, false));
+            _progress.Report(new Progress(TEXT, _percent, false, _started));
         }
     }
 }

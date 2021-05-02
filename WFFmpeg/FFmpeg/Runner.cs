@@ -11,6 +11,7 @@ namespace WFFmpeg.FFmpeg
         public async Task RunAsync(string[] args, string progressPrefix = null, IProgress<Progress> progress = null, CancellationToken cancellationToken = default)
         {
             _progress = progress;
+            _started = DateTime.Now;
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -20,7 +21,7 @@ namespace WFFmpeg.FFmpeg
                 if (args.Length > 1)
                     _text += $" (Pass {i + 1} of {args.Length})";
 
-                progress?.Report(new Progress(_text, 0, false));
+                progress?.Report(new Progress(_text, 0, false, _started));
 
                 var cmd = new Command();
                 cmd.OnStdErr += (sender, e) => ParseText(e.Text);
@@ -28,11 +29,12 @@ namespace WFFmpeg.FFmpeg
                 if (exitCode != 0)
                     throw new Exception($"Failed to run ffmpeg. Exit code {exitCode}");
 
-                progress?.Report(new Progress(progressPrefix, 1d, true));
+                progress?.Report(new Progress(progressPrefix, 1d, true, _started));
             }
         }
 
         private IProgress<Progress> _progress = null;
+        private DateTime _started = DateTime.Now;
         private double _duration = 0;
         private double _percent = 0;
         private string _text = null;
@@ -60,7 +62,7 @@ namespace WFFmpeg.FFmpeg
                     catch { }
             }
 
-            _progress.Report(new Progress(_text, _percent, false));
+            _progress.Report(new Progress(_text, _percent, false, _started));
         }
     }
 }

@@ -7,7 +7,7 @@ using WFFmpeg.FFmpeg.Encoding;
 
 namespace WFFmpeg.AutoConverter
 {
-    public class JobFactory
+    public static class JobFactory
     {
         public static Job Build(Media.MediaFile mediaFile)
         {

@@ -32,6 +32,8 @@ namespace WFFmpeg.AutoConverter
 
         public double MaxLevel { get; set; }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "x265 is a proper name")]
         public bool x265HighTier { get; set; }
 
         public string PixelFormat { get; set; }

@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EasyProc" Version="21.4.16.331" />
+    <PackageReference Include="EasyProc" Version="21.5.2.1079" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
