@@ -71,7 +71,7 @@ namespace WFFmpeg.FFmpeg.Decoding
             _lastLine = null;
             _lastVFR = null;
 
-            progress?.Report(new Progress { Text = "Scanning" });
+            progress?.Report(new Progress("Scanning", 0, false));
 
             var cmd = new Command();
             cmd.OnStdErr += (sender, e) => ParseText(e.Text);
@@ -92,7 +92,7 @@ namespace WFFmpeg.FFmpeg.Decoding
                     catch { }
             }
 
-            progress?.Report(new Progress { Text = "Scanning", Percent = 1d });
+            progress?.Report(new Progress("Scanning", 1d, true));
 
         }
 
@@ -132,11 +132,7 @@ namespace WFFmpeg.FFmpeg.Decoding
                 if (match.Success)
                     try
                     {
-                        _progress?.Report(new Progress
-                        {
-                            Text = "Scanning",
-                            Percent = TimeSpan.Parse(match.Groups[1].Value).TotalSeconds / _duration
-                        });
+                        _progress?.Report(new Progress("Scanning", TimeSpan.Parse(match.Groups[1].Value).TotalSeconds / _duration, false));
                     }
                     catch { }
             }

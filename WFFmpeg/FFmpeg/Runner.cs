@@ -20,7 +20,7 @@ namespace WFFmpeg.FFmpeg
                 if (args.Length > 1)
                     _text += $" (Pass {i + 1} of {args.Length})";
 
-                progress?.Report(new Progress { Text = _text });
+                progress?.Report(new Progress(_text, 0, false));
 
                 var cmd = new Command();
                 cmd.OnStdErr += (sender, e) => ParseText(e.Text);
@@ -28,7 +28,7 @@ namespace WFFmpeg.FFmpeg
                 if (exitCode != 0)
                     throw new Exception($"Failed to run ffmpeg. Exit code {exitCode}");
 
-                progress?.Report(new Progress { Text = progressPrefix, Percent = 1d });
+                progress?.Report(new Progress(progressPrefix, 1d, true));
             }
         }
 
@@ -60,11 +60,7 @@ namespace WFFmpeg.FFmpeg
                     catch { }
             }
 
-            _progress.Report(new Progress
-            {
-                Text = _text,
-                Percent = _percent
-            });
+            _progress.Report(new Progress(_text, _percent, false));
         }
     }
 }

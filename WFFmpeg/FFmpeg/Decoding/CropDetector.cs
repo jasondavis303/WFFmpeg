@@ -100,11 +100,7 @@ namespace WFFmpeg.FFmpeg.Decoding
                     catch { }
             }
 
-            _progress.Report(new Progress
-            {
-                Text = TEXT,
-                Percent = _percent
-            });
+            _progress.Report(new Progress(TEXT, _percent, false));
         }
     }
 }
