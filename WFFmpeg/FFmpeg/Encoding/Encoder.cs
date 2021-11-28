@@ -46,7 +46,7 @@ namespace WFFmpeg.FFmpeg.Encoding
             var ret = new StringBuilder();
 
             if (job.StartTime > 0)
-                ret.AppendFormat(" -ss {0}", TimeSpan.FromSeconds(job.StartTime).ToString("g"));
+                ret.AppendFormat(" -ss {0}", TimeSpan.FromSeconds(job.StartTime).ToString("hh\\:mm\\:ss\\.fff"));
 
             ret.AppendFormat(" -i \"{0}\"", job.InputFile);
 
@@ -56,13 +56,13 @@ namespace WFFmpeg.FFmpeg.Encoding
                         if (cstrm.ExternalFile)
                         {
                             if(job.StartTime > 0)
-                                ret.AppendFormat(" -ss {0}", TimeSpan.FromSeconds(job.StartTime).ToString("g"));
+                                ret.AppendFormat(" -ss {0}", TimeSpan.FromSeconds(job.StartTime).ToString("hh\\:mm\\:ss\\.fff"));
                             ret.AppendFormat(" -i \"{0}\"", cstrm.Filename);
                         }
 
             
             if (job.Duration > 0)
-                ret.AppendFormat(" -to {0}", TimeSpan.FromSeconds(job.Duration).ToString("g"));
+                ret.AppendFormat(" -to {0}", TimeSpan.FromSeconds(job.Duration).ToString("hh\\:mm\\:ss\\.fff"));
            
 
             return ret.ToString();
