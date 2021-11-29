@@ -89,10 +89,10 @@ namespace WFFmpeg.FFmpeg.Encoding
 
                     if (job.VideoStream.DeInterlace)
                         //vf.Add("idet,yadif=mode=1:deint=1");
-                        vf.Add("yadif");
+                        vf.Add("yadif=mode=1");
 
                     else if (job.VideoStream.DeTelecine)
-                        vf.Add("fieldmatch,yadif=deint=1,decimate");
+                        vf.Add("fieldmatch,dejudder");
                     
                     if (job.VideoStream.Crop.Width > 0 && job.VideoStream.Crop.Height > 0)
                     {
