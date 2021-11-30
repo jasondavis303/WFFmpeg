@@ -88,11 +88,10 @@ namespace WFFmpeg.FFmpeg.Encoding
                         vf.Add($"format={job.VideoStream.PixelFormat}");
 
                     if (job.VideoStream.DeInterlace)
-                        //vf.Add("idet,yadif=mode=1:deint=1");
                         vf.Add("yadif=mode=1");
 
                     else if (job.VideoStream.DeTelecine)
-                        vf.Add("fieldmatch,dejudder");
+                        vf.Add("pullup");
                     
                     if (job.VideoStream.Crop.Width > 0 && job.VideoStream.Crop.Height > 0)
                     {
@@ -109,26 +108,9 @@ namespace WFFmpeg.FFmpeg.Encoding
                     if (job.BurnSubtitleStream != null)
                     {
                         if (job.BurnSubtitleStream.ExternalFile && job.BurnSubtitleStream.IsText)
-                        {
-                            /*                             
-                                C:\path\to\subs.srt
-
-                                level 1 - escape (:) (\) (')
-                                C\:\\path\\to\\subs.srt
-
-                                level 2 - put in single quotes after escaping (\) and  (')
-                                subtitles='C\:\\\path\\\to\\\subs.srt'
-
-                                So in 1 step:
-                                string.Replace(\, \\\).Replace(', \\').Replace(:, \:)
-                             */
-                            string s = job.BurnSubtitleStream.Filename.Replace("\\", "\\\\\\").Replace("'", "\\\\").Replace(":", "\\:");
-                            vf.Add($"subtitles='{s}'");
-                        }
+                            vf.Add($"subtitles={FormatFilenameForFilter(job.BurnSubtitleStream.Filename)}");
                         else
-                        {
                             overlay = true;
-                        }
                     }
 
                     if (vf.Count > 0 || overlay)
@@ -394,6 +376,23 @@ namespace WFFmpeg.FFmpeg.Encoding
             }
 
             return ret.ToString();
+        }
+
+        private static string FormatFilenameForFilter(string filename)
+        {
+            /*                             
+                C:\path\to\file.ext
+
+                level 1 - escape (:) (\) (')
+                C\:\\path\\to\\file.ext
+
+                level 2 - put in single quotes after escaping (\) and  (')
+                subtitles='C\:\\\path\\\to\\\file.ext'
+
+                So in 1 step:
+                string.Replace(\, \\\).Replace(', \\').Replace(:, \:)
+            */
+            return $"'{filename.Replace("\\", "\\\\\\").Replace("'", "\\\\").Replace(":", "\\:")}'";
         }
 
         public Task RunAsync(Job job, IProgress<Progress> progress = null, CancellationToken cancellationToken = default)
