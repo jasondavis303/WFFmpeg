@@ -130,7 +130,7 @@ namespace WFFmpeg.FFmpeg.Encoding
                             filters.Add($"[0:{job.VideoStream.Index}]{joined}[outv]");
 
                         else //overlay
-                            filters.Add($"[0:{job.VideoStream.Index}][[1:{job.BurnSubtitleStream.Index}]overlay[outv]");
+                            filters.Add($"[0:{job.VideoStream.Index}][1:{job.BurnSubtitleStream.Index}]overlay[outv]");
 
                         maps.Add("\"[outv]\"");
                     }
