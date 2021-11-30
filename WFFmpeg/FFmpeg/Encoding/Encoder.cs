@@ -88,11 +88,17 @@ namespace WFFmpeg.FFmpeg.Encoding
                         vf.Add($"format={job.VideoStream.PixelFormat}");
 
                     if (job.VideoStream.DeInterlace)
-                        vf.Add("yadif=mode=1");
-
+                    {
+                        if (System.IO.File.Exists(Configuration.Nnedi3_Weights))
+                            vf.Add($"nnedi=weights={FormatFilenameForFilter(Configuration.Nnedi3_Weights)}");
+                        else
+                            vf.Add("yadif=mode=1");
+                    }
                     else if (job.VideoStream.DeTelecine)
+                    {
                         vf.Add("pullup");
-                    
+                    }
+
                     if (job.VideoStream.Crop.Width > 0 && job.VideoStream.Crop.Height > 0)
                     {
                         string s = $"crop={job.VideoStream.Crop.Width}:{job.VideoStream.Crop.Height}";

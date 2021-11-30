@@ -11,7 +11,7 @@ namespace WFFmpeg
         public static string FFmpegDirectory { get; set; }
 
         private static string Ext => Environment.OSVersion.Platform == PlatformID.Win32NT ? ".exe" : string.Empty;
-        
+
         private static string BuildPath(string app)
         {
             string ret = app + Ext;
@@ -34,5 +34,19 @@ namespace WFFmpeg
         /// Get the path to the ffplay exe
         /// </summary>
         public static string FFplay => BuildPath("ffplay");
+
+        /// <summary>
+        /// Get the path to nnedi3_weights.bin
+        /// </summary>
+        public static string Nnedi3_Weights
+        {
+            get
+            {
+                string ret = BuildPath("nnedi3_weights");
+                if (ret.EndsWith(".exe"))
+                    ret = ret.Substring(0, ret.Length - 4);
+                return ret + ".bin";
+            }
+        }
     }
 }
