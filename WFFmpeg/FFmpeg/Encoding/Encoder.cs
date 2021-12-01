@@ -84,9 +84,6 @@ namespace WFFmpeg.FFmpeg.Encoding
                 {
                     var vf = new List<string>();
 
-                    if (!string.IsNullOrWhiteSpace(job.VideoStream.PixelFormat))
-                        vf.Add($"format={job.VideoStream.PixelFormat}");
-
                     if (job.VideoStream.DeInterlace)
                     {
                         if (System.IO.File.Exists(Configuration.Nnedi3_Weights))
@@ -118,6 +115,9 @@ namespace WFFmpeg.FFmpeg.Encoding
                         else
                             overlay = true;
                     }
+
+                    if (!string.IsNullOrWhiteSpace(job.VideoStream.PixelFormat))
+                        vf.Add($"format={job.VideoStream.PixelFormat}");
 
                     if (vf.Count > 0 || overlay)
                     {
