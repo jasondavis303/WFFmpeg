@@ -8,6 +8,8 @@ namespace WFFmpeg.FFmpeg
 {
     public class Runner
     {
+        public EventHandler<Progress> OnProgressChanged;
+
         public async Task RunAsync(string[] args, string progressPrefix = null, IProgress<Progress> progress = null, CancellationToken cancellationToken = default)
         {
             _progress = progress;
@@ -41,7 +43,7 @@ namespace WFFmpeg.FFmpeg
 
         private void ParseText(string text)
         {
-            if (_progress == null)
+            if (_progress == null && OnProgressChanged == null)
                 return;
 
             Match match;
@@ -62,7 +64,10 @@ namespace WFFmpeg.FFmpeg
                     catch { }
             }
 
-            _progress.Report(new Progress(_text, _percent, false, _started));
+            try { _progress?.Report(new Progress(_text, _percent, false, _started)); }
+            catch { }
+            try { OnProgressChanged?.Invoke(this, new Progress(_text, _percent, false, _started)); }
+            catch { }
         }
     }
 }
