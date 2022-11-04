@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WFFmpeg.FFmpeg.Encoding
 {
-    public class Encoder
+    public class Encoder : Runner
     {
         public static string[] BuildArgs(Job job)
         {           
@@ -411,7 +411,7 @@ namespace WFFmpeg.FFmpeg.Encoding
             if (args.Length > 1)
                 task = "Encoding";
 
-            return new Runner().RunAsync(args, task, progress, cancellationToken);
+            return RunAsync(args, task, progress, cancellationToken);
         }
     }
 }

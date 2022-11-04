@@ -11,6 +11,8 @@ namespace WFFmpeg.FFmpeg.Decoding
 {
     public class CropDetector
     {
+        public EventHandler<Progress> OnProgressChanged;
+
         public static string BuildArgs(string inputFile) => $"-i \"{inputFile}\" -vf fps=1/30,cropdetect=24:2:0 -f null -";
 
         public async Task<Rectangle> RunAsync(string inputFile, IProgress<Progress> progress = null, CancellationToken cancellationToken = default)
@@ -60,6 +62,7 @@ namespace WFFmpeg.FFmpeg.Decoding
             }
 
             progress?.Report(new Progress(TEXT, 1d, true, _started));
+            OnProgressChanged?.Invoke(this, new Progress(TEXT, 1d, true, _started));
 
             return new Rectangle
             {
@@ -85,7 +88,7 @@ namespace WFFmpeg.FFmpeg.Decoding
                 try { _crops.Add(match.Groups[1].Value); }
                 catch { }
 
-            if (_progress == null)
+            if (_progress == null && OnProgressChanged == null)
                 return;
 
             if (_duration == 0)
@@ -104,7 +107,10 @@ namespace WFFmpeg.FFmpeg.Decoding
                     catch { }
             }
 
-            _progress.Report(new Progress(TEXT, _percent, false, _started));
+            try { _progress?.Report(new Progress(TEXT, _percent, false, _started)); }
+            catch { }
+            try { OnProgressChanged?.Invoke(this, new Progress(TEXT, _percent, false, _started)); }
+            catch { }
         }
     }
 }

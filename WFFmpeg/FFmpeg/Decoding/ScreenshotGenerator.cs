@@ -6,7 +6,7 @@ using WFFmpeg.Media;
 
 namespace WFFmpeg.FFmpeg.Decoding
 {
-    public class ScreenshotGenerator
+    public class ScreenshotGenerator : Runner
     {
         /// <summary>
         /// Build args to extract 1 iamge
@@ -74,7 +74,7 @@ namespace WFFmpeg.FFmpeg.Decoding
             string tmpFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".jpg");
             string args = BuildArgs(mf.Filename, mf.Duration.TotalSeconds, tmpFile);
 
-            await new Runner().RunAsync(new string[] { args }, "Extracting", progress, cancellationToken).ConfigureAwait(false);
+            await RunAsync(new string[] { args }, "Extracting", progress, cancellationToken).ConfigureAwait(false);
 
             return tmpFile;
         }
@@ -89,7 +89,7 @@ namespace WFFmpeg.FFmpeg.Decoding
             try
             {
                 (string args, int cnt) = BuildArgs(mf, tmpFile, secs, maxW, outputDirectory);
-                await new Runner().RunAsync(new string[] { args }, "Extracting", progress, cancellationToken).ConfigureAwait(false);
+                await RunAsync(new string[] { args }, "Extracting", progress, cancellationToken).ConfigureAwait(false);
                 return cnt;
             }
             finally

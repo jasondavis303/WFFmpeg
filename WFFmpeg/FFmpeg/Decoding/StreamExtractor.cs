@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WFFmpeg.FFmpeg.Decoding
 {
-    public class StreamExtractor
+    public class StreamExtractor : Runner
     {        
         public static string BuildArgs(string inputFile, IEnumerable<StreamInfo> streams)
         {
@@ -133,7 +133,7 @@ namespace WFFmpeg.FFmpeg.Decoding
 
         public Task RunAsync(string args, IProgress<Progress> progress = null, CancellationToken cancellationToken = default)
         {
-            return new Runner().RunAsync(new string[] { args }, "Extracting", progress, cancellationToken);
+            return RunAsync(new string[] { args }, "Extracting", progress, cancellationToken);
         }
     }
 }

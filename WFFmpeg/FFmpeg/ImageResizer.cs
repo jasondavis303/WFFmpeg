@@ -6,7 +6,7 @@ using WFFmpeg.Media;
 
 namespace WFFmpeg.FFmpeg
 {
-    public class ImageResizer
+    public class ImageResizer : Runner
     {
         public async Task ResizeImageAsync(string inputFile, string outputFile, int maxW, int maxH = -1, CancellationToken cancellationToken = default)
         {
@@ -25,7 +25,7 @@ namespace WFFmpeg.FFmpeg
                 int newH = maxH < 1 ? -2 : Convert.ToInt32(Math.Floor(scale * (double)mf.Images[0].Height));
 
                 string args = $"-i \"{mf.Filename}\" -vf scale={newW}:{newH} -q:v 1 -y \"{outputFile}\"";
-                return new Runner().RunAsync(new string[] { args }, null, null, cancellationToken);
+                return RunAsync(new string[] { args }, null, null, cancellationToken);
             }
             else
             {

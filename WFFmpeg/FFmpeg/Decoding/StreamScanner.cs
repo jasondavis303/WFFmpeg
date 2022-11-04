@@ -9,6 +9,8 @@ namespace WFFmpeg.FFmpeg.Decoding
 {
     public class StreamScanner
     {
+        public EventHandler<Progress> OnProgressChanged;
+
         public static string BuildScanArgs(string inputFile, int index) => $"-i \"{inputFile}\" -map 0:{index} -c copy -f null -";
 
         public static string BuildVFRDetectArgs(string inputFile, int index, TimeSpan vidDuration) => $"-ss {vidDuration.TotalSeconds / 2:0.000} -t 100 -i \"{inputFile}\" -map 0:{index} -vf vfrdet -f null -";
@@ -73,6 +75,7 @@ namespace WFFmpeg.FFmpeg.Decoding
             _lastVFR = null;
 
             progress?.Report(new Progress("Scanning", 0, false, _started));
+            OnProgressChanged?.Invoke(this, new Progress("Scanning", 0, false, _started));
 
             var cmd = new Command();
             cmd.OnStdErr += (sender, e) => ParseText(e.Text);
@@ -94,7 +97,7 @@ namespace WFFmpeg.FFmpeg.Decoding
             }
 
             progress?.Report(new Progress("Scanning", 1d, true, _started));
-
+            OnProgressChanged?.Invoke(this, new Progress("Scanning", 1d, true, _started));
         }
 
 
@@ -126,17 +129,24 @@ namespace WFFmpeg.FFmpeg.Decoding
                 if (match.Success)
                     if (int.TryParse(match.Groups[1].Value, out int frames))
                         _frames = frames;
-            }           
+            }
 
             if (_duration > 0)
             {
                 match = new Regex("time=((\\d|:|\\.)*)").Match(text);
                 if (match.Success)
-                    try
-                    {
-                        _progress?.Report(new Progress("Scanning", TimeSpan.Parse(match.Groups[1].Value).TotalSeconds / _duration, false, _started));
-                    }
+                {
+                    double percent = -1;
+                    try { percent = TimeSpan.Parse(match.Groups[1].Value).TotalSeconds / _duration; }
                     catch { }
+                    if (percent >= 0)
+                    {
+                        try { _progress?.Report(new Progress("Scanning", percent, false, _started)); }
+                        catch { }
+                        try { OnProgressChanged?.Invoke(this, new Progress("Scanning", percent, false, _started)); }
+                        catch { }
+                    }
+                }
             }
 
             _lastLine = text;
