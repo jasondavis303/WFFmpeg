@@ -238,7 +238,7 @@ namespace WFFmpeg.FFprobe
                                     (istrm.Tags?.Language.ICEquals("cpe") ?? false),
 
                         IsText = new string[] { "ass", "eia_608", "eia_708", "cea_608", "mov_text", "subrip" }.ICContains(istrm.CodecName),
-                        IsCC = istrm.CodecName.ICEquals("eia_608") || istrm.CodecName.ICEquals("eia_708");
+                        IsCC = istrm.CodecName.ICEquals("eia_608") || istrm.CodecName.ICEquals("eia_708")
                     };
 
                     ret.SubtitleStreams.Add(strm);
