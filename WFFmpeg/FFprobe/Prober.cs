@@ -203,7 +203,9 @@ namespace WFFmpeg.FFprobe
 
                         IsCommentary = (istrm.Disposition?.Comment ?? false) || (istrm.Tags?.Title.ICContains("commenta") ?? false),
 
-                        IsEnglish = (istrm.Tags?.Language.ICEquals("eng") ?? false) || (istrm.Tags?.Language.ICStartsWith("en") ?? false)
+                        IsEnglish = (istrm.Tags?.Language.ICEquals("eng") ?? false) || 
+                                    (istrm.Tags?.Language.ICEquals("cpe") ?? false) || 
+                                    (istrm.Tags?.Language.ICStartsWith("en") ?? false)
                     };
 
                     //Fix Bitrate
@@ -231,10 +233,12 @@ namespace WFFmpeg.FFprobe
                         Title = istrm.Tags?.Title,
                         Language = string.IsNullOrWhiteSpace(istrm.Tags?.Language) ? "und" : istrm.Tags?.Language,
 
-                        IsEnglish = (istrm.Tags?.Language.ICEquals("eng") ?? false) || (istrm.Tags?.Language.ICStartsWith("en") ?? false),
+                        IsEnglish = (istrm.Tags?.Language.ICEquals("eng") ?? false) ||
+                                    (istrm.Tags?.Language.ICStartsWith("en") ?? false) ||
+                                    (istrm.Tags?.Language.ICEquals("cpe") ?? false),
 
-                        IsText = new string[] { "ass", "eia_608", "cea_608", "mov_text", "subrip" }.ICContains(istrm.CodecName),
-                        IsCC = istrm.CodecName.ICEquals("eia_608")
+                        IsText = new string[] { "ass", "eia_608", "eia_708", "cea_608", "mov_text", "subrip" }.ICContains(istrm.CodecName),
+                        IsCC = istrm.CodecName.ICEquals("eia_608") || istrm.CodecName.ICEquals("eia_708");
                     };
 
                     ret.SubtitleStreams.Add(strm);
