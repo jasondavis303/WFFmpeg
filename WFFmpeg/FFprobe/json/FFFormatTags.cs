@@ -62,6 +62,22 @@ namespace WFFmpeg.FFprobe.json
 
         [JsonProperty("iTunMOVI", NullValueHandling = NullValueHandling.Ignore)]
         public string iTunMOVI { get; set; }
+
+        [JsonProperty("artist", NullValueHandling = NullValueHandling.Ignore)]
+        public string Artist { get; set; }
+
+        [JsonProperty("album", NullValueHandling = NullValueHandling.Ignore)]
+        public string Album { get; set; }
+
+        [JsonProperty("album_artist", NullValueHandling = NullValueHandling.Ignore)]
+        public string AlbumArtist { get; set; }
+
+        [JsonProperty("track", NullValueHandling = NullValueHandling.Ignore)]
+        public string Track { get; set; }
+
+        [JsonProperty("disc", NullValueHandling = NullValueHandling.Ignore)]
+        public string Disc { get; set; }
+
     }
 
 }

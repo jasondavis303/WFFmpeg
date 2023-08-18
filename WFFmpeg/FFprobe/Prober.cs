@@ -91,6 +91,30 @@ namespace WFFmpeg.FFprobe
                 ret.Meta.Producers.AddRange(movi.Producers);
                 ret.Meta.ScreenWriters.AddRange(movi.ScreenWriters);
                 ret.Meta.Studio = movi.Studio;
+
+                //m4a Files
+                ret.Meta.Album = ff.Format.Tags.Album;
+                ret.Meta.AlbumArtist = ff.Format.Tags.AlbumArtist;
+                ret.Meta.Artist = ff.Format.Tags.Artist;
+
+                if (!string.IsNullOrWhiteSpace(ff.Format.Tags.Disc))
+                    try
+                    {
+                        var parts = ff.Format.Tags.Disc.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                        ret.Meta.DiscNumber = int.Parse(parts[0].Trim());
+                        ret.Meta.TotalDiscs = int.Parse(parts[1].Trim());
+                    }
+                    catch { }
+
+                if (!string.IsNullOrWhiteSpace(ff.Format.Tags.Track))
+                    try
+                    {
+                        var parts = ff.Format.Tags.Track.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                        ret.Meta.TrackNumber = int.Parse(parts[0].Trim());
+                        ret.Meta.TotalTracks = int.Parse(parts[1].Trim());
+                    }
+                    catch { }
+
             }
 
 

@@ -34,6 +34,21 @@ namespace WFFmpeg.Media
 
         public string Rating { get; set; }
 
+        public string Artist { get; set; }
+
+        public string AlbumArtist { get; set; }
+
+        public string Album { get; set; }
+
+        public int? TrackNumber { get; set; }
+
+        public int? TotalTracks { get; set; }
+
+        public int? DiscNumber { get; set; }
+
+        public int? TotalDiscs { get; set; }
+
+
         /// <summary>
         /// Long Description
         /// </summary>
