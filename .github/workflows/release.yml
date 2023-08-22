@@ -19,5 +19,5 @@ jobs:
       - name: Build
         run: |
           TSV=$(date +%y.%m.%d).${{ github.run_number }}
-          dotnet pack -c release -o nuget /p:Version=$TSV
+          dotnet pack -c release -o nuget -p:Version=$TSV
           dotnet nuget push "nuget/*.nupkg" --skip-duplicate -k ${{secrets.NUGET_KEY}} -s https://api.nuget.org/v3/index.json
