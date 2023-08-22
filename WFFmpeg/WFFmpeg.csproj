@@ -11,6 +11,7 @@
     <RepositoryUrl>https://github.com/jasondavis303/WFFmpeg</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Description>Just another over-simplified wrapper for the ffmpeg command line tool.</Description>
+	
   </PropertyGroup>
 
   <ItemGroup>
