@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net5.0;net6.0;net7.0</TargetFrameworks>
     <Version>1.0.0.1</Version>
     <Authors>Jason Davis</Authors>
     <Company>jasondavis303</Company>
@@ -14,8 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EasyProc" Version="21.5.2.1079" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="EasyProc" Version="22.10.11.1364" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
