@@ -11,6 +11,8 @@ namespace WFFmpeg.FFmpeg.Encoding
         public double StartTime { get; set; }
         
         public double Duration { get; set; }
+
+        public short MaxMuxingQueueSize { get; set; }
         
         public VideoStream VideoStream { get; set; }
 

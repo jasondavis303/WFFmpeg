@@ -30,8 +30,10 @@ namespace WFFmpeg.FFmpeg.Encoding
             string p1 = multiPass ? job.VideoStream.Codec == VideoCodecs.x264 ? " -pass 1" : "-x265-params pass=1" : null;
             string p2 = multiPass ? job.VideoStream.Codec == VideoCodecs.x264 ? " -pass 2" : "-x265-params pass=2" : null;
 
+            var maxMuxingQueueSize = job.MaxMuxingQueueSize > 0 ? $" -max_muxing_queue_size {job.MaxMuxingQueueSize}" : null;
+
             var cmd1 = $"-fflags +genpts{inputPass1}{filterPass1}{mapsPass1}{venc}{p1} -f mp4 -y {devNull}";
-            var cmd2 = $"-fflags +genpts{inputPass2}{filterPass2}{mapsPass2}{venc}{p2}{aenc}{senc}{movFlags} -y \"{job.OutputFile}\"";
+            var cmd2 = $"-fflags +genpts{inputPass2}{filterPass2}{mapsPass2}{venc}{p2}{aenc}{senc}{movFlags}{maxMuxingQueueSize} -y \"{job.OutputFile}\"";
 
             var cmds = new List<string>();
             if (multiPass)
