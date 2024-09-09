@@ -175,13 +175,16 @@ namespace WFFmpeg.FFprobe
                         catch { }
 
                         //Misc
-                        if (!istrm.FieldOrder.ICEquals("progressive"))
+                        if (!string.IsNullOrWhiteSpace(istrm.FieldOrder))
                         {
-                            strm.IsInterlaced = new string[] { "tt", "bb", "tb", "bt" }.ICContains(istrm.FieldOrder);
+                            if (!istrm.FieldOrder.ICEquals("progressive"))
+                            {
+                                strm.IsInterlaced = new string[] { "tt", "bb", "tb", "bt" }.ICContains(istrm.FieldOrder);
 
-                            if (!strm.IsInterlaced)
-                                strm.IsTelecined = istrm.CodecName.ICEquals("mpeg2video") &&
-                                    Math.Round(strm.FrameRate, 2) == 29.97d;
+                                if (!strm.IsInterlaced)
+                                    strm.IsTelecined = istrm.CodecName.ICEquals("mpeg2video") &&
+                                        Math.Round(strm.FrameRate, 2) == 29.97d;
+                            }
                         }
 
                         ret.VideoStreams.Add(strm);
