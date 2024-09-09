@@ -15,12 +15,16 @@ namespace WFFmpeg.FFprobe.json
             string value = serializer.Deserialize<string>(reader);
 
             string[] parts = value.Split(':');
-            if (parts[parts.Length - 1].Contains("."))
+            if (parts[parts.Length - 1].Contains('.') || parts[^1].Contains(','))
             {
-                string[] parts2 = parts[parts.Length - 1].Split('.');
+                parts[^1] = parts[^1].Replace(',', '.');
+                string[] parts2 = parts[^1].Split('.');
+                parts2[1] = parts2[1].TrimEnd('0');
+                if (string.IsNullOrWhiteSpace(parts2[1]))
+                    parts2[1] = "0";
                 if (parts2[1].Length > 3)
-                    parts2[1] = parts2[1].Substring(0, 3);
-                parts[parts.Length - 1] = string.Join(".", parts2);
+                    parts2[1] = parts2[1][..3];
+                parts[^1] = string.Join(".", parts2);
             }
             value = string.Join(":", parts);
 
