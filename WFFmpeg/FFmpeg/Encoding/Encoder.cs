@@ -23,7 +23,7 @@ namespace WFFmpeg.FFmpeg.Encoding
             var devNull = Environment.OSVersion.Platform == PlatformID.Win32NT ? "NUL" : "/dev/null";
 
             //ffmpeg creates copies of chapters. This flag disables the copy, leaving any original chapter intact
-            string movFlags = job.VideoStream == null ? null : " -movflags disable_chpl";
+            string movFlags = job.VideoStream == null ? null : " -map_metadata -1 -movflags +faststart+disable_chpl";
             
 
             bool multiPass = job.VideoStream?.Method == EncodingMethods.AvgBitrate;
